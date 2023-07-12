@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package ObsPipe.Proto;
+
+import "google/protobuf/timestamp.proto";
+
+enum ImageFormat
+{
+  Raw   = 0;
+  Bmp   = 1;
+  Jpeg  = 2;
+  Png   = 3;
+  Tga   = 4;
+  Tiff  = 5;
+  Webp  = 6;  
+}
+
+enum PixelFormat
+{
+  RGBA  = 0;
+  BGRA  = 1;
+}
+
+enum Compression
+{
+  None  = 0;
+  ZLib  = 1;
+}
+
+message Rectangle
+{
+  int32 x      = 1;
+  int32 y      = 2;
+  int32 width  = 3;
+  int32 height = 4;
+}
+
+message Frame
+{
+  int32                     id           = 1;    // Frame id
+  google.protobuf.Timestamp rendered     = 2;    // Time when frame was rendered
+  google.protobuf.Timestamp generated    = 3;    // Time when frame was prepared to be sent
+  int32                     width        = 4;    // Frame width
+  int32                     height       = 5;    // Frame height
+  int32                     bpp          = 6;    // Frame bits per pixel
+  ImageFormat               image_format = 7;    // Frame image format
+  PixelFormat               pixel_format = 8;    // Frame pixel format (only used when image format is Raw)
+  Compression               compression  = 9;    // Frame pixel compression (only used when image format is Raw)
+  Rectangle                 region       = 10;   // Region that was updated
+  bytes                     buffer       = 100;  // Image/Pixel data
+}
